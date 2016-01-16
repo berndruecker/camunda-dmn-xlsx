@@ -78,21 +78,29 @@ public class XlsxWorksheetConverter {
 
     // inputs
     for (IndexedCell inputCell : inputOutputColumns.getInputHeaderCells()) {
-      Input input = generateElement(dmnModel, Input.class, worksheetContext.resolveCellValue(inputCell.getCell()));
+      String cellValue = worksheetContext.resolveCellValue(inputCell.getCell());
+
+      Input input = generateElement(dmnModel, Input.class, cellValue);
       decisionTable.addChildElement(input);
 
+
       InputExpression inputExpression = generateElement(dmnModel, InputExpression.class);
-      Text text = generateText(dmnModel, worksheetContext.resolveCellValue(inputCell.getCell()));
+      Text text = generateText(dmnModel, cellValue);
       inputExpression.setText(text);
+      inputExpression.setTypeRef("string"); // TODO!
       input.setInputExpression(inputExpression);
+      input.setLabel(cellValue);
 
       dmnConversionContext.getIndexedDmnColumns().addInput(inputCell, input);
     }
 
     // outputs
     for (IndexedCell outputCell : inputOutputColumns.getOutputHeaderCells()) {
-      Output output = generateElement(dmnModel, Output.class, worksheetContext.resolveCellValue(outputCell.getCell()));
-      output.setName(worksheetContext.resolveCellValue(outputCell.getCell()));
+      String cellValue = worksheetContext.resolveCellValue(outputCell.getCell());
+	  Output output = generateElement(dmnModel, Output.class, cellValue);
+      output.setName(cellValue);
+      output.setLabel(cellValue);
+      output.setTypeRef("string"); // TODO
       decisionTable.addChildElement(output);
 
       dmnConversionContext.getIndexedDmnColumns().addOutput(outputCell, output);

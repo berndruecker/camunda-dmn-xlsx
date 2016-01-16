@@ -39,6 +39,8 @@ public class XslxToDmnConversionTest {
     Assert.assertEquals(2, table.getInputs().size());
     Assert.assertEquals(1, table.getOutputs().size());
     Assert.assertEquals(4, table.getRules().size());
+    
+    TestHelper.writeDmnFile(dmnModelInstance, "test1.dmn");
   }
 
   @Test

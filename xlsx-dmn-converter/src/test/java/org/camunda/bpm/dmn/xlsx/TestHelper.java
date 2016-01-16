@@ -12,12 +12,14 @@
  */
 package org.camunda.bpm.dmn.xlsx;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Collection;
 
 import org.camunda.bpm.model.dmn.DmnModelInstance;
 import org.camunda.bpm.model.dmn.instance.Decision;
 import org.camunda.bpm.model.dmn.instance.DecisionTable;
+import org.camunda.bpm.model.xml.impl.util.IoUtil;
 import org.junit.Assert;
 
 /**
@@ -43,4 +45,15 @@ public class TestHelper {
 
     return decisionTables.iterator().next();
   }
+  
+  public static void writeDmnFile(DmnModelInstance modelInstance, String name) {
+	  try {
+		  FileOutputStream os = new FileOutputStream(name);
+		  IoUtil.writeDocumentToOutputStream(modelInstance.getDocument(), os);
+		  os.close();
+	  } catch (Exception ex) {
+		  throw new RuntimeException("Could not write DMN to file '" + name + "'", ex);
+	  }
+  }
+
 }
